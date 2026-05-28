@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "categorie": "F1",
+        "libelle": "Quelle est la première voiture de F1 à avoir utilisé un moteur hybride ?",
+        "options": ["Mercedes W05", "Ferrari SF70H"],
+        "bonne_reponse": "Mercedes W05"
+    },
+    {
+        "id": 2,
+        "categorie": "MotoGP",
+        "libelle": "Quel pilote de MotoGP a remporté le plus de titres mondiaux ?",
+        "options": ["Valentino Rossi", "Giacomo Agostini"],
+        "bonne_reponse": "Giacomo Agostini"
+    },
+    {
+        "id": 3,
+        "categorie": "NBA",
+        "libelle": "Quel joueur de basket a remporté le plus de titres NBA ?",
+        "options": ["Michael Jordan", "LeBron James"],
+        "bonne_reponse": "Michael Jordan"
+    },
+    {
+        "id": 4,
+        "categorie": "Manga",
+        "libelle": "Quel est le manga le plus vendu de tous les temps ?",
+        "options": ["One Piece", "Dragon Ball"],
+        "bonne_reponse": "One Piece"
+    },
+    {
+        "id": 5,
+        "categorie": "Anime",
+        "libelle": "Quel anime a remporté le prix du meilleur anime de l'année aux Crunchyroll Anime Awards 2021 ?",
+        "options": ["Jujutsu Kaisen", "Attack on Titan"],
+        "bonne_reponse": "Jujutsu Kaisen"
+    },
+    {
+        "id": 6,
+        "categorie": "F1",
+        "libelle": "Quel pilote de F1 a remporté le plus de titres mondiaux ?",
+        "options": ["Michael Schumacher", "Lewis Hamilton"],
+        "bonne_reponse": "Michael Schumacher"
+    },
+    {
+        "id": 7,
+        "categorie": "MotoGP",
+        "libelle": "Quel constructeur de MotoGP a remporté le plus de titres mondiaux ?",
+        "options": ["Honda", "Yamaha"],
+        "bonne_reponse": "Honda"
+    },
+    {
+        "id": 8,
+        "categorie": "NBA",
+        "libelle": "Quel joueur de basket a marqué le plus de points en carrière ?",
+        "options": ["Kareem Abdul-Jabbar", "Karl Malone"],
+        "bonne_reponse": "Kareem Abdul-Jabbar"
+    },
+    {
+        "id": 9,
+        "categorie": "Manga",
+        "libelle": "Quel est le manga le plus long de tous les temps ?",
+        "options": ["One Piece", "Dragon Ball"],
+        "bonne_reponse": "One Piece"
+    },
+    {
+        "id": 10,
+        "categorie": "Anime",
+        "libelle": "Quel anime a remporté le prix du meilleur anime de l'année aux Crunchyroll Anime Awards 2020 ?",
+        "options": ["Demon Slayer", "Mob Psycho 100"],
+        "bonne_reponse": "Demon Slayer"
+    }
+]
