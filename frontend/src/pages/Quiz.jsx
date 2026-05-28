@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useContext } from "react";
+import { useReducer, useEffect, useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { UserContext } from "../context/UserContext";
@@ -34,12 +34,34 @@ function quizReducer(state, action) {
 
 function Quiz() {
   const [state, dispatch] = useReducer(quizReducer, initialState);
+  const [tempsRestant, setTempsRestant] = useState(60);
   const { data: questions, loading, error } = useFetch("/questions.json");
   const navigate = useNavigate();
   const { setMeilleurScore } = useContext(UserContext);
+  const timerRef = useRef(null);
 
+  // Chronomètre
+  useEffect(() => {
+    if (state.statut === "en_cours") {
+      timerRef.current = setInterval(() => {
+        setTempsRestant((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            dispatch({ type: "FINISH_QUIZ" });
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(timerRef.current);
+  }, [state.statut]);
+
+  // Fin du quiz
   useEffect(() => {
     if (questions && (state.statut === "termine" || state.index >= questions.length)) {
+      clearInterval(timerRef.current);
       dispatch({ type: "FINISH_QUIZ" });
       setMeilleurScore(state.score);
       navigate("/resultats");
@@ -54,6 +76,7 @@ function Quiz() {
   return (
     <div>
       <h1>Quiz</h1>
+      <p>Temps restant : {tempsRestant}s</p>
       <p>Score : {state.score}</p>
       <p>Question {state.index + 1} / {questions.length}</p>
       <h2>{questionCourante.libelle}</h2>
@@ -69,6 +92,9 @@ function Quiz() {
           {option}
         </button>
       ))}
+      <button onClick={() => dispatch({ type: "START_QUIZ" })}>
+        Démarrer
+      </button>
     </div>
   );
 }
