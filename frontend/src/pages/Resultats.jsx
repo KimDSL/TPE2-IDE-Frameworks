@@ -11,7 +11,7 @@ function Resultats() {
   }, [meilleurScore]);
 
   return (
-    <div>
+    <div className="resultats">
       <h1>Résultats</h1>
       <p>Bravo {pseudo} !</p>
       <p>Score : {meilleurScore} / 10</p>

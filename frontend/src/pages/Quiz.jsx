@@ -74,7 +74,7 @@ function Quiz() {
   const questionCourante = questions[state.index];
 
   return (
-    <div>
+    <div className="quiz">
       <h1>Quiz</h1>
       <p>Temps restant : {tempsRestant}s</p>
       <p>Score : {state.score}</p>

@@ -15,7 +15,7 @@ function Accueil() {
   }
 
   return (
-    <div>
+    <div className="accueil">
       <h1>Bienvenue sur PolyQuiz</h1>
       <p>Saisis ton pseudo pour commencer</p>
       <form onSubmit={handleSubmit}>
