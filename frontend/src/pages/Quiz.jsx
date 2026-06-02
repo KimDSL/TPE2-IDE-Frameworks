@@ -15,7 +15,7 @@ function quizReducer(state, action) {
     case "START_QUIZ":
       return { ...state, statut: "en_cours" };
 
-    case "ANSWER_QUESTION":
+    case "ANSWER_QUESTION":{
       const estCorrecte = action.reponse === action.bonneReponse;
       return {
         ...state,
@@ -23,7 +23,7 @@ function quizReducer(state, action) {
         score: estCorrecte ? state.score + 1 : state.score,
         index: state.index + 1,
       };
-
+    }
     case "FINISH_QUIZ":
       return { ...state, statut: "termine" };
 
@@ -72,6 +72,9 @@ function Quiz() {
   if (error) return <p>Erreur : {error}</p>;
 
   const questionCourante = questions[state.index];
+  if (state.index >= questions.length) {
+      return <p>Redirection...</p>;
+  }
 
   return (
     <div className="quiz">
