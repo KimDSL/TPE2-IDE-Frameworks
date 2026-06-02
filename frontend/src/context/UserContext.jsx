@@ -7,7 +7,6 @@ export function UserProvider({ children }) {
   const [meilleurScore, setMeilleurScore] = useState(0);
   const [token, setToken] = useState(null);
 
-  // Charger la session au demarrage
   useEffect(() => {
     const savedToken = localStorage.getItem('polyquiz_token');
     const savedUser = localStorage.getItem('polyquiz_user');
@@ -24,7 +23,7 @@ export function UserProvider({ children }) {
     }
   }, []);
 
-  // Fonction de connexion avec l'API
+
   const login = async (pseudo) => {
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
@@ -52,7 +51,6 @@ export function UserProvider({ children }) {
     }
   };
 
-  // Deconnexion
   const logout = () => {
     localStorage.removeItem('polyquiz_token');
     localStorage.removeItem('polyquiz_user');
@@ -61,7 +59,7 @@ export function UserProvider({ children }) {
     setMeilleurScore(0);
   };
 
-  // Mise a jour du score
+
   const updateScore = async (newScore) => {
     if (!token) return false;
     
@@ -79,7 +77,6 @@ export function UserProvider({ children }) {
       
       if (response.ok && data.recordBattu) {
         setMeilleurScore(newScore);
-        // Mettre a jour localStorage
         const savedUser = localStorage.getItem('polyquiz_user');
         if (savedUser) {
           const user = JSON.parse(savedUser);

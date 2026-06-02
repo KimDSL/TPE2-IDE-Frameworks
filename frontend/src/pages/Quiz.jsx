@@ -35,16 +35,13 @@ function quizReducer(state, action) {
 function Quiz() {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const [tempsRestant, setTempsRestant] = useState(60);
-  // Changement ici : appel a l'API backend au lieu du fichier JSON
   const { data: apiResponse, loading, error } = useFetch("http://localhost:5000/api/questions");
   const navigate = useNavigate();
-  const { updateScore } = useContext(UserContext);  // Changement ici
+  const { updateScore } = useContext(UserContext); 
   const timerRef = useRef(null);
 
-  // Extraire les questions de la reponse API
   const questions = apiResponse?.questions || [];
 
-  // Chronometre
   useEffect(() => {
     if (state.statut === "en_cours") {
       timerRef.current = setInterval(() => {
@@ -62,12 +59,10 @@ function Quiz() {
     return () => clearInterval(timerRef.current);
   }, [state.statut]);
 
-  // Fin du quiz - Envoi du score au backend
   useEffect(() => {
     if (questions.length > 0 && (state.statut === "termine" || state.index >= questions.length)) {
       clearInterval(timerRef.current);
       dispatch({ type: "FINISH_QUIZ" });
-      // Changement ici : appel a updateScore au lieu de setMeilleurScore
       updateScore(state.score);
       navigate("/resultats");
     }
