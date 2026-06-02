@@ -15,7 +15,7 @@ function quizReducer(state, action) {
     case "START_QUIZ":
       return { ...state, statut: "en_cours" };
 
-    case "ANSWER_QUESTION":{
+    case "ANSWER_QUESTION": {
       const estCorrecte = action.reponse === action.bonneReponse;
       return {
         ...state,
@@ -35,12 +35,16 @@ function quizReducer(state, action) {
 function Quiz() {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const [tempsRestant, setTempsRestant] = useState(60);
-  const { data: questions, loading, error } = useFetch("/questions.json");
+  // Changement ici : appel a l'API backend au lieu du fichier JSON
+  const { data: apiResponse, loading, error } = useFetch("http://localhost:5000/api/questions");
   const navigate = useNavigate();
-  const { setMeilleurScore } = useContext(UserContext);
+  const { updateScore } = useContext(UserContext);  // Changement ici
   const timerRef = useRef(null);
 
-  // Chronomètre
+  // Extraire les questions de la reponse API
+  const questions = apiResponse?.questions || [];
+
+  // Chronometre
   useEffect(() => {
     if (state.statut === "en_cours") {
       timerRef.current = setInterval(() => {
@@ -58,22 +62,24 @@ function Quiz() {
     return () => clearInterval(timerRef.current);
   }, [state.statut]);
 
-  // Fin du quiz
+  // Fin du quiz - Envoi du score au backend
   useEffect(() => {
-    if (questions && (state.statut === "termine" || state.index >= questions.length)) {
+    if (questions.length > 0 && (state.statut === "termine" || state.index >= questions.length)) {
       clearInterval(timerRef.current);
       dispatch({ type: "FINISH_QUIZ" });
-      setMeilleurScore(state.score);
+      // Changement ici : appel a updateScore au lieu de setMeilleurScore
+      updateScore(state.score);
       navigate("/resultats");
     }
-  }, [state.index, state.statut]);
+  }, [state.index, state.statut, questions.length]);
 
   if (loading) return <p>Chargement des questions...</p>;
   if (error) return <p>Erreur : {error}</p>;
+  if (questions.length === 0) return <p>Aucune question trouvee. Lancez npm run seed</p>;
 
   const questionCourante = questions[state.index];
   if (state.index >= questions.length) {
-      return <p>Redirection...</p>;
+    return <p>Redirection...</p>;
   }
 
   return (
@@ -82,21 +88,21 @@ function Quiz() {
       <p>Temps restant : {tempsRestant}s</p>
       <p>Score : {state.score}</p>
       <p>Question {state.index + 1} / {questions.length}</p>
-      <h2>{questionCourante.libelle}</h2>
+      <h2>{questionCourante.text}</h2>
       {questionCourante.options.map((option) => (
         <button
           key={option}
           onClick={() => dispatch({
             type: "ANSWER_QUESTION",
             reponse: option,
-            bonneReponse: questionCourante.bonne_reponse,
+            bonneReponse: questionCourante.correctAnswer,
           })}
         >
           {option}
         </button>
       ))}
       <button onClick={() => dispatch({ type: "START_QUIZ" })}>
-        Démarrer
+        Demarrer
       </button>
     </div>
   );

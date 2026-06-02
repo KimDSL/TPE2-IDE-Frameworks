@@ -3,29 +3,45 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 function Accueil() {
-  const [inputPseudo, setInputPseudo] = useState("");
-  const { setPseudo } = useContext(UserContext);
+  const [pseudo, setPseudo] = useState("");
+  const [erreur, setErreur] = useState("");
+  const { login } = useContext(UserContext);
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputPseudo.trim()) return;
-    setPseudo(inputPseudo.trim());
-    navigate("/quiz");
-  }
+    
+    if (!pseudo.trim()) {
+      setErreur("Veuillez entrer un pseudo");
+      return;
+    }
+    
+    if (pseudo.includes(" ")) {
+      setErreur("Le pseudo ne doit pas contenir d'espaces");
+      return;
+    }
+    
+    const result = await login(pseudo);
+    
+    if (result.success) {
+      navigate("/quiz");
+    } else {
+      setErreur(result.error || "Erreur de connexion");
+    }
+  };
 
   return (
     <div className="accueil">
-      <h1>Bienvenue sur PolyQuiz</h1>
-      <p>Saisis ton pseudo pour commencer</p>
+      <h1>PolyQuiz</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Ton pseudo"
-          value={inputPseudo}
-          onChange={(e) => setInputPseudo(e.target.value)}
+          placeholder="Entrez votre pseudo"
+          value={pseudo}
+          onChange={(e) => setPseudo(e.target.value)}
         />
-        <button type="submit">Jouer</button>
+        {erreur && <p style={{ color: "red" }}>{erreur}</p>}
+        <button type="submit">Commencer</button>
       </form>
     </div>
   );
